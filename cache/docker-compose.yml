@@ -1,0 +1,25 @@
+version: '3'
+services:
+  cache:
+    build: .
+    networks:
+      - redis-net
+    volumes:
+      - ./cache_test.go:/go/src/github.com/melvinodsa/go-experiments/cache/cache_test.go
+      - ./redis_test.go:/go/src/github.com/melvinodsa/go-experiments/cache/redis_test.go
+      - ./cache.go:/go/src/github.com/melvinodsa/go-experiments/cache/cache.go
+      - ./redis.go:/go/src/github.com/melvinodsa/go-experiments/cache/redis.go
+      - ./Gopkg.toml:/go/src/github.com/melvinodsa/go-experiments/cache/Gopkg.toml
+      - ./Gopkg.lock:/go/src/github.com/melvinodsa/go-experiments/cache/Gopkg.lock
+      - ./vendor:/go/src/github.com/melvinodsa/go-experiments/cache/vendor
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    networks:
+      - redis-net
+      
+networks:
+  redis-net:
+    driver: bridge
