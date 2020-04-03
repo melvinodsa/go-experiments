@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"sync"
 	"testing"
 )
 
@@ -11,11 +12,21 @@ import (
 func BenchmarkCache(b *testing.B) {
 	//Setup the data
 	CacheSetup()
+	var wg sync.WaitGroup
 	for n := 0; n < b.N; n++ {
-		req := GetRandom()
-		RequestChannel <- req
-		if req.Type == READ {
-			<-req.Out
-		}
+		wg.Add(1)
 	}
+	for n := 0; n < b.N; n++ {
+		go wc(&wg)
+	}
+	wg.Wait()
+}
+
+func wc(wg *sync.WaitGroup) {
+	req := GetRandom()
+	RequestChannel <- req
+	if req.Type == READ {
+		<-req.Out
+	}
+	wg.Done()
 }

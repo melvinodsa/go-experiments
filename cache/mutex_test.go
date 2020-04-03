@@ -6,24 +6,24 @@ import (
 )
 
 /*
- * This file contains the benchmark for the redis cache
+ * This file contains the tests for the cache
  */
 
-func BenchmarkRedis(b *testing.B) {
+func BenchmarkMutexCache(b *testing.B) {
 	//Setup the data
-	RedisSetup()
+	CacheSetup()
 	var wg sync.WaitGroup
 	for n := 0; n < b.N; n++ {
 		wg.Add(1)
 	}
 	for n := 0; n < b.N; n++ {
-		go wr(&wg)
+		go wm(&wg)
 	}
 	wg.Wait()
 }
 
-func wr(wg *sync.WaitGroup) {
+func wm(wg *sync.WaitGroup) {
 	req := GetRandom()
-	RedisCache(req)
+	MutexCache(req)
 	wg.Done()
 }

@@ -18,7 +18,8 @@ docker-compose up
 
 ## Benchmark Results
 
-Test | Total Number of Iterations | Execution Time per operation
----- | -------------------------- | ----------------------------
-BenchmarkCache-2 | 3000000 | 554 ns/op
-BenchmarkRedis-2 | 10000 | 171351 ns/op
+Test | Total Number of Iterations | Execution Time per operation | Memory allocations
+---- | -------------------------- | ---------------------------- | ------------------
+BenchmarkCache-4 | 1000000 | 2782 ns/op | 2 allocs/op
+BenchmarkMutexCache-4 | 3336343 | 2952 ns/op | 1 allocs/op
+BenchmarkRedis-4 | 575284 | 1741 ns/op | 4 allocs/op
